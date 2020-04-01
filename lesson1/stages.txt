@@ -1,0 +1,61 @@
+#1 Репозиторий создан.
+
+#2 Ubuntu установлен в VMWare Workstation Player:
+   :~$ lsb_release -a
+   # No LSB modules are available.
+   # Distributor ID: Ubuntu
+   # Description:    Ubuntu 18.04.4 LTS
+   # Release:        18.04
+   # Codename:       bionic
+
+#3 Установка утилит для гостевой ОС:
+
+   # Подключили "диск" (iso-образ) с дистрибутивом VMWare tools
+   sudo -i
+   mkdir -p /mnt/cdrom
+   mount /dev/cdrom /mnt/cdrom
+   cd /mnt/cdrom
+   mkdir -p /usr/vmware
+   cp * /usr/vmware
+   tar -x -f *.tar.gz
+   cd vmware-tools-distrib
+   perl vmware-install.pl
+   # Тут вводили много уточнений для установки VMWare tools
+   reboot
+   
+   # Устанавливаем зависимости
+   # (по факту - добавляем пакеты со всеми зависимостями)
+   sudo -i
+   apt-get update
+   apt-get install gcc
+   apt-get install make
+   apt-get install perl
+
+#4 Настройки интерфейсов выполнены
+   # Тут имеем два сетевых адаптера: NAT, Host-Only
+
+#5 Устанавливаем open SSH
+   sudo -i
+   apt install openssh-server
+   ufw allow 21211/tcp
+   # Настраиваем SSH
+   vi /etc/ssh/sshd_config
+   # Вносим следующие настройки в sshd_config
+   # Port 21211
+   # Перезапускаем ssh
+   systemctl restart ssh
+   # Генерируем новые DSA-ключи 
+   ssh-keygen -t dsa
+
+#6
+#6.1
+   # root по-умолчанию не имеет пароля
+   passwd root
+   # также по-умолчанию доступ под root закрыт в настройках sshd
+   # меняем параметр PermitRootLogin на yes в /etc/ssh/sshd_config
+   # Перезапускаем ssh
+   systemctl restart ssh
+#6.2
+
+# На остальное банально не хватило времени (((
+# Попробую сделать в другой раз
