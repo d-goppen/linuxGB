@@ -1,0 +1,1 @@
+0 0 * * * root du -sh $(sed /nologin/d /etc/passwd | awk -F":" '{print $6}')
